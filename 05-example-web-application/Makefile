@@ -29,9 +29,13 @@ run-api-node:
 .PHONY: run-api-golang
 run-api-golang:
 	@echo Starting golang api
-	cd api-golang && \
-		DATABASE_URL=${DATABASE_URL} \
-		go run main.go
+# 	On Linux or MacOS use:
+# 	cd api-golang && \
+# 		DATABASE_URL=${DATABASE_URL} \
+# 		go run main.go
+
+# 	# On Windows use cmd /C "set VAR=VALUE && command"
+		cd api-golang && cmd /C "set DATABASE_URL=$(DATABASE_URL)&&go run main.go"
 
 .PHONY: run-client-react
 run-client-react:
