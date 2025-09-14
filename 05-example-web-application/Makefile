@@ -1,20 +1,30 @@
 DATABASE_URL:=postgres://postgres:foobarbaz@localhost:5432/postgres
+.PHONY: debug-dburl
+debug-dburl:
+# Checks the value of DATABASE_URL
+	@echo [DEBUG] DATABASE_URL='$(DATABASE_URL)'
 
 .PHONY: run-postgres
 run-postgres:
 	@echo Starting postgres container
 	-docker run \
+		--name my_postgres \
 		-e POSTGRES_PASSWORD=foobarbaz \
 		-v pgdata:/var/lib/postgresql/data \
 		-p 5432:5432 \
 		postgres:15.1-alpine
 
+
 .PHONY: run-api-node
 run-api-node:
 	@echo Starting node api
-	cd api-node && \
-		DATABASE_URL=${DATABASE_URL} \
-		npm run dev
+# 	On Linux or MacOS use:
+# 		cd api-node && \
+# 		DATABASE_URL=${DATABASE_URL} \
+# 		npm run dev
+
+# 	# On Windows use cmd /C "set VAR=VALUE && command"
+	cd api-node && cmd /C "set DATABASE_URL=$(DATABASE_URL)&&npm run dev"
 
 .PHONY: run-api-golang
 run-api-golang:
